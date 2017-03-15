@@ -37,11 +37,8 @@ let events = [
 app.get('/', (req, res) => res.send('Hello World from get with ES6!'));
 
 app.get('/events', (req, res) => res.send(events));
-app.get('/events/:id', (req, res) => res.send(events[req.params.id]));
+app.get('/events/:id', (req, res) => res.send(events.find(ev => ev.id === req.params.id)));
 
 app.post('/', (req, res) => res.send('Hello World form post with ES6!'));
 
 app.listen(3000, () =>  console.log('Example app listening on port 3000!'));
-
-
-
