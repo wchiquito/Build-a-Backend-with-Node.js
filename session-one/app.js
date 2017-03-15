@@ -37,6 +37,7 @@ let events = [
 app.get('/', (req, res) => res.send('Hello World from get with ES6!'));
 
 app.get('/events', (req, res) => res.send(events));
+app.get('/events/:id', (req, res) => res.send(events[req.params.id]));
 
 app.post('/', (req, res) => res.send('Hello World form post with ES6!'));
 
