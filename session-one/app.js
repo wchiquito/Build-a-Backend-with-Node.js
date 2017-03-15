@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser');
  
 let events = [
     {
@@ -38,6 +39,9 @@ app.get('/', (req, res) => res.send('Hello World from get with ES6!'));
 
 app.get('/events', (req, res) => res.send(events));
 app.get('/events/:id', (req, res) => res.send(events.find(ev => ev.id === parseInt(req.params.id, 10))));
-app.post('/events', (req, res) => events.push(req.body));
+app.post('/events', (req, res) => { console.log(req.body); res.send(req.body) } );
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.listen(3000, () =>  console.log('Example app listening on port 3000!'));
