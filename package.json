@@ -1,8 +1,8 @@
 {
   "name": "build-a-backend-with-nodejs",
   "version": "1.0.0",
-  "description": "Hola que tal!",
-  "main": "index.js",
+  "description": "In this course you will learn how to build a production-ready REST API using Node.js and Express.js.",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
