@@ -18,7 +18,7 @@ function add(req, res) {
 
 function updateById(req, res) {
   eventManager.updateById(req.params.id, req.body)
-    .then(() => res.end())
+    .then(statusMessage => res.send(statusMessage))
     .catch(err => res.status(404).send(err));
 }
 

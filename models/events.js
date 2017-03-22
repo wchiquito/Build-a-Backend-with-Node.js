@@ -24,7 +24,10 @@ let add = event => new Promise(resolve => {
 let updateById = (id, update) =>
   new Promise((resolve, reject) => {
     let index = findIndexById(id);
-    if (index > -1) resolve(_eventList.splice(index, 1, update));
+    if (index > -1) {
+      _eventList.splice(index, 1, update);
+      resolve(new StatusMessage(200, 'Event updated!', update));
+    }
     else reject(new EventError());
 });
 
