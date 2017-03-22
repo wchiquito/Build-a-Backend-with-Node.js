@@ -51,10 +51,10 @@ let createEventHash = function(event) {
 }
 
 let Event = function(title, description, date) {
+  this.id = createEventHash(this);
   this.title = title;
   this.description = description;
   this.date = date;
-  this.id = createEventHash(this);
 };
 
 let EventError = function() {
