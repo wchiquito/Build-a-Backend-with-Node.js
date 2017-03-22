@@ -46,9 +46,7 @@ let deleteById = id =>
     } else reject(new EventError());
 });
 
-let createEventHash = function(event) {
-  return sha256.update(event, 'utf8').digest('hex');
-}
+let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
 let Event = function(title, description, date) {
   this.id = createEventHash(this);
