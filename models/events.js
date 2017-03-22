@@ -16,7 +16,10 @@ let findIndexById = id => {
   else new EventError();
 };
 
-let add = event => new Promise(resolve => resolve(_eventList.push(event)));
+let add = event => new Promise(resolve => { 
+  _eventList.push(event);
+  resolve(new StatusMessage(200, 'Event added!', event));
+  });
 
 let updateById = (id, update) =>
   new Promise((resolve, reject) => {
@@ -28,8 +31,10 @@ let updateById = (id, update) =>
 let deleteById = id =>
   new Promise((resolve, reject) => {
     let index = findIndexById(id);
-    if (index > -1) resolve(_eventList.splice(index, 1));
-    else reject(new EventError());
+    if (index > -1) {
+      let event = _eventList.splice(index, 1);
+      resolve(new StatusMessage(200, 'Event deleted!', event[0]));
+    } else reject(new EventError());
 });
 
 let Event = function(id, title, description, date) {
@@ -44,6 +49,13 @@ let EventError = function() {
     status: 404,
     message: "Event not found"
   }
+};
+
+let StatusMessage = function(statusCode, message, event) {
+    this.status = statusCode;
+    this.message = message || 'Operation finished';
+    this.length = _eventList.length;
+    this.event = event;
 };
 
 add(new Event(1,

@@ -13,7 +13,7 @@ function findById(req, res) {
 
 function add(req, res) {
   eventManager.add(req.body)
-    .then(() => res.end());
+    .then(statusMessage => res.send(statusMessage));
 }
 
 function updateById(req, res) {
@@ -24,7 +24,7 @@ function updateById(req, res) {
 
 function deleteById(req, res) {
   eventManager.deleteById(req.params.id)
-    .then(() => res.end())
+    .then(statusMessage => res.send(statusMessage))
     .catch(err => res.status(404).send(err));
 }
 
