@@ -18,6 +18,7 @@
   "homepage": "https://github.com/wchiquito/Build-a-Backend-with-Node.js#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
-    "express": "^4.15.2"
+    "express": "^4.15.2",
+    "sha.js": "^2.4.8"
   }
 }
