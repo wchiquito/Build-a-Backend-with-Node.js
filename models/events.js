@@ -6,7 +6,10 @@ let _eventList = [];
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
-let deleteIdProperty = update => { if (update.hasOwnProperty('id')) delete update.id; };
+let deleteIdProperty = update => {
+  if (update.hasOwnProperty('id')) delete update.id;
+  return update;
+};
 
 let Event = function(title, description, date) {
   this.id = createEventHash(this);
@@ -16,10 +19,10 @@ let Event = function(title, description, date) {
 };
 
 let StatusMessage = function(statusCode, message, event) {
-    this.status = statusCode;
-    this.message = message || 'Operation finished';
-    this.length = _eventList.length;
-    if (event) this.event = event;
+  this.status = statusCode;
+  this.message = message || 'Operation finished';
+  this.length = _eventList.length;
+  if (event) this.event = event;
 };
 
 let compareById = (event, id) => event.id === id;
@@ -38,22 +41,22 @@ let findIndexById = id => {
   else new StatusMessage(404, 'Event not found');
 };
 
-let add = event => new Promise(resolve => { 
+let add = event => new Promise(resolve => {
   let newEvent = new Event(event.title,
-                            event.description,
-                            event.date);
+                           event.description,
+                           event.date);
   _eventList.push(newEvent);
   resolve(new StatusMessage(200, 'Event added!', newEvent));
-  });
+});
 
 let updateById = (id, update) =>
   new Promise((resolve, reject) => {
     let index = findIndexById(id);
     if (index > -1) {
-      deleteIdProperty(update);
-      let event = Object.assign(_eventList[index], update);
-      _eventList.splice(index, 1, event);
-      resolve(new StatusMessage(200, 'Event updated!', event));
+      _eventList.splice(index,
+                        1,
+                        Object.assign(_eventList[index], deleteIdProperty(update)));
+      resolve(new StatusMessage(200, 'Event updated!', _eventList[index]));
     }
     else reject(new StatusMessage(404, 'Event not found'));
 });
@@ -61,10 +64,10 @@ let updateById = (id, update) =>
 let deleteById = id =>
   new Promise((resolve, reject) => {
     let index = findIndexById(id);
-    if (index > -1) {
-      let event = _eventList.splice(index, 1);
-      resolve(new StatusMessage(200, 'Event deleted!', event[0]));
-    } else reject(new StatusMessage(404, 'Event not found'));
+    if (index > -1) resolve(new StatusMessage(200,
+                                              'Event deleted!',
+                                              _eventList.splice(index, 1).shift()));
+    else reject(new StatusMessage(404, 'Event not found'));
 });
 
 add(new Event(
