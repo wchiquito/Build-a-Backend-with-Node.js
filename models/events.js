@@ -3,20 +3,20 @@ let sha256 = createHash('sha256');
 
 let _eventList = [];
 
-let compareById = (event, id) => event.id === parseInt(id, 10);
+let compareById = (event, id) => event.id === id;
 
 let findAll = () => new Promise(resolve => resolve(_eventList));
 
 let findById = id => new Promise((resolve, reject) => {
   let event = _eventList.find(event => compareById(event, id));
   if (event) resolve(event);
-  else reject(new EventError());
+  else reject(new StatusMessage(404, 'Event not found'));
 });
 
 let findIndexById = id => {
   let index = _eventList.findIndex(event => compareById(event, id));
   if (index > -1) return index;
-  else new EventError();
+  else new StatusMessage(404, 'Event not found');
 };
 
 let add = event => new Promise(resolve => { 
@@ -34,7 +34,7 @@ let updateById = (id, update) =>
       _eventList.splice(index, 1, update);
       resolve(new StatusMessage(200, 'Event updated!', update));
     }
-    else reject(new EventError());
+    else reject(new StatusMessage(404, 'Event not found'));
 });
 
 let deleteById = id =>
@@ -43,7 +43,7 @@ let deleteById = id =>
     if (index > -1) {
       let event = _eventList.splice(index, 1);
       resolve(new StatusMessage(200, 'Event deleted!', event[0]));
-    } else reject(new EventError());
+    } else reject(new StatusMessage(404, 'Event not found'));
 });
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
@@ -55,18 +55,11 @@ let Event = function(title, description, date) {
   this.date = date;
 };
 
-let EventError = function() {
-  return {
-    status: 404,
-    message: "Event not found"
-  }
-};
-
 let StatusMessage = function(statusCode, message, event) {
     this.status = statusCode;
     this.message = message || 'Operation finished';
     this.length = _eventList.length;
-    this.event = event;
+    if (event) this.event = event;
 };
 
 add(new Event(
