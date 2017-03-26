@@ -4,7 +4,7 @@
   "description": "In this course you will learn how to build a production-ready REST API using Node.js and Express.js.",
   "main": "server.js",
   "scripts": {
-    "start": "NODE_ENV=dev node server.js",
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
