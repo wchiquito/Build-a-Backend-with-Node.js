@@ -1,3 +1,5 @@
+"use strict";
+
 let createHash = require('sha.js');
 let sha256 = createHash('sha256');
 

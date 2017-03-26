@@ -1,3 +1,5 @@
+"use strict";
+
 let eventManager = require('../models/events');
 
 function findAll(req, res) {
