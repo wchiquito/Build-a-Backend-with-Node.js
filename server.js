@@ -4,10 +4,11 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const events = require('./routes/events');
+const appPORT = process.env.PORT || 3000;
 
 app.use(bodyParser.json({ type: 'application/json' }));
 
-app.listen(3000, () => console.log('App listening on port 3000!'));
+app.listen(appPORT, () => console.log('App listening on port %d on %s!', appPORT, process.env.NODE_ENV));
 
 app.get('/', (req, res) => res.send('Build a Backend with Node.js and Express.js'));
 
