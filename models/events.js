@@ -2,8 +2,25 @@
 
 let createHash = require('sha.js');
 let sha256 = createHash('sha256');
-
 let _eventList = [];
+
+let Event = function(title, description, date) {
+  this.id = createEventHash(this);
+  this.title = title;
+  this.description = description;
+  this.date = date;
+};
+
+let StatusMessage = function(statusCode, message, event) {
+    this.status = statusCode;
+    this.message = message || 'Operation finished';
+    this.length = _eventList.length;
+    if (event) this.event = event;
+};
+
+let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
+
+let deleteIdProperty = update => { if (update.hasOwnProperty('id')) delete update.id; };
 
 let compareById = (event, id) => event.id === id;
 
@@ -49,24 +66,6 @@ let deleteById = id =>
       resolve(new StatusMessage(200, 'Event deleted!', event[0]));
     } else reject(new StatusMessage(404, 'Event not found'));
 });
-
-let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
-
-let deleteIdProperty = update => { if (update.hasOwnProperty('id')) delete update.id; };
-
-let Event = function(title, description, date) {
-  this.id = createEventHash(this);
-  this.title = title;
-  this.description = description;
-  this.date = date;
-};
-
-let StatusMessage = function(statusCode, message, event) {
-    this.status = statusCode;
-    this.message = message || 'Operation finished';
-    this.length = _eventList.length;
-    if (event) this.event = event;
-};
 
 add(new Event(
   "Concierto Metallica",
