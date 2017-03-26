@@ -33,6 +33,7 @@ let updateById = (id, update) =>
   new Promise((resolve, reject) => {
     let index = findIndexById(id);
     if (index > -1) {
+      deleteIdProperty(update);
       let event = Object.assign(_eventList[index], update);
       _eventList.splice(index, 1, event);
       resolve(new StatusMessage(200, 'Event updated!', event));
@@ -50,6 +51,8 @@ let deleteById = id =>
 });
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
+
+let deleteIdProperty = update => { if (update.hasOwnProperty('id')) delete update.id; };
 
 let Event = function(title, description, date) {
   this.id = createEventHash(this);
