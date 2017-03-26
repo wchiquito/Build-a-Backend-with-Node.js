@@ -33,8 +33,9 @@ let updateById = (id, update) =>
   new Promise((resolve, reject) => {
     let index = findIndexById(id);
     if (index > -1) {
-      _eventList.splice(index, 1, update);
-      resolve(new StatusMessage(200, 'Event updated!', update));
+      let event = Object.assign(_eventList[index], update);
+      _eventList.splice(index, 1, event);
+      resolve(new StatusMessage(200, 'Event updated!', event));
     }
     else reject(new StatusMessage(404, 'Event not found'));
 });
