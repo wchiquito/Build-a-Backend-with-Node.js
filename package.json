@@ -4,7 +4,7 @@
   "description": "In this course you will learn how to build a production-ready REST API using Node.js and Express.js.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --timeout 10000"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "sha.js": "^2.4.8"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "mocha": "^3.2.0"
   }
