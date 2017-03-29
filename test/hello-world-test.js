@@ -57,3 +57,23 @@ describe('/GET one single event by id', () => {
         })
     });
 });
+
+describe('/PUT an update on a single event by id', () => {
+    it('should update an specific event by id (sha1)', (done) => {
+        let fakeEvent = {
+            "id": "68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b",
+            "title": "Duaplipa",
+            "description": "Female Singer",
+            "date": "1988"
+        };
+        let fakeSuccesResponse = {status: 200, message: 'Event updated!', length: 6, event: fakeEvent};
+        chai.request(server)
+            .put('/events/68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b')
+            .send(fakeEvent)
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.eql(fakeSuccesResponse);
+                done();
+        })
+    });
+});
