@@ -3,7 +3,7 @@ let sha256 = createHash('sha256');
 
 let _eventList = [];
 
-let compareById = (event, id) => event.id === parseInt(id, 10);
+let compareById = (event, id) => event.id === id;
 
 let findAll = () => new Promise(resolve => resolve(_eventList));
 

@@ -22,3 +22,15 @@ describe('/GET all Events', () => {
         })
     });
 });
+
+describe('/GET one single event by id', () => {
+    it('should GET an specific event by id (sha1)', (done) => {
+        chai.request(server)
+            .get('/events/68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b')
+            .end((err, res) => {
+                res.should.have.status(200);
+                //res.body.length.should.be.eql(5);
+                done();
+        })
+    });
+});
