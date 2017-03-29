@@ -1,3 +1,4 @@
+const Event = require('../models/events');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const assert = chai.assert;
@@ -30,6 +31,28 @@ describe('/GET one single event by id', () => {
             .end((err, res) => {
                 res.should.have.status(200);
                 //res.body.length.should.be.eql(5);
+                done();
+        })
+    });
+});
+
+ describe('/POST a new event', () => {
+    it('should POST a new event', (done) => {
+        //let newEvent = new Event('Dualipa', 'Female Singer', '1988');
+        let fakeEvent = {
+            "title": "Duaplipa",
+            "description": "Female Singer",
+            "date": "1988"
+            }
+        let fakeSuccesResponse = {status: 200, message: 'Event added!', length: 6, event: fakeEvent};
+
+        chai.request(server)
+            .post('/events')
+            .send(fakeEvent)
+            .end((err, res) => {
+                fakeSuccesResponse.event.id = res.body.event.id;
+                res.should.have.status(200);
+                res.body.should.be.eql(fakeSuccesResponse)
                 done();
         })
     });

@@ -90,4 +90,4 @@ add(new Event(
   "Evento Musical de ponerse en pie y alzar el puño",
   "2017-04-13"));
 
-module.exports = { findAll, findById, add, updateById, deleteById };
+module.exports = { findAll, findById, add, updateById, deleteById, Event};
