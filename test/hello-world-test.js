@@ -77,3 +77,22 @@ describe('/PUT an update on a single event by id', () => {
         })
     });
 });
+
+describe('/DELETE a single event by id', () => {
+    it('should delete an specific event by id (sha1)', (done) => {
+        let fakeEvent = {
+            "id": "68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b",
+            "title": "Duaplipa",
+            "description": "Female Singer",
+            "date": "1988"
+        };
+        let fakeSuccesResponse = {status: 200, message: 'Event deleted!', length: 5, event: fakeEvent};
+        chai.request(server)
+            .delete('/events/68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b')
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.eql(fakeSuccesResponse);
+                done();
+        })
+    });
+});
