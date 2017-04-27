@@ -1,11 +1,14 @@
-let createHash = require('sha.js');
+const createHash = require('sha.js');
+const dbController = require('./dbController');
 let sha256 = createHash('sha256');
 
 let _eventList = [];
 
 let compareById = (event, id) => event.id === id;
 
-let findAll = () => new Promise(resolve => resolve(_eventList));
+let findAll = () => new Promise(resolve => {
+  dbController.getAllEvents( result => resolve(result));
+});
 
 let findById = id => new Promise((resolve, reject) => {
   let event = _eventList.find(event => compareById(event, id));
@@ -23,18 +26,22 @@ let add = event => new Promise(resolve => {
   let newEvent = new Event(event.title,
                             event.description,
                             event.date);
-  _eventList.push(newEvent);
-  resolve(new StatusMessage(200, 'Event added!', newEvent));
-  });
+  console.log('Created new event', newEvent);
+  //_eventList.push(newEvent);
+  dbController.insertEventDocument(newEvent, () => console.log("fin") )
+  resolve(new StatusMessage(200, 'Event Added!', added));
+  
+});
 
 let updateById = (id, update) =>
   new Promise((resolve, reject) => {
-    let index = findIndexById(id);
-    if (index > -1) {
-      _eventList.splice(index, 1, update);
-      resolve(new StatusMessage(200, 'Event updated!', update));
-    }
-    else reject(new EventError());
+    //let index = findIndexById(id);
+    //if (index > -1) {
+      //_eventList.splice(index, 1, update);
+      
+   // }
+    //else reject(new EventError());
+    dbController.findAndUpdate(id,update, result =>  resolve(new StatusMessage(200, 'Event updated!', result)));
 });
 
 let deleteById = id =>
@@ -49,11 +56,13 @@ let deleteById = id =>
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
 let Event = function(title, description, date) {
-  this.id = createEventHash(this);
+  //this.id = createEventHash(this);
   this.title = title;
   this.description = description;
   this.date = date;
 };
+
+
 
 let EventError = function() {
   return {

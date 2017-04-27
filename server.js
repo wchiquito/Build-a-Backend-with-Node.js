@@ -4,6 +4,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const events = require('./routes/events');
+const dbController = require('./models/dbController');
+
+
 
 app.use(bodyParser.json({ type: 'application/json' }));
 
@@ -19,5 +22,8 @@ app.route("/events/:id")
   .get(events.findById)
   .put(events.updateById)
   .delete(events.deleteById);
+
+dbController.helloDatabase();
+
 
 module.exports = app;
