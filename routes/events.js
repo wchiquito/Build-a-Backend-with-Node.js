@@ -15,7 +15,7 @@ let add = (req, res) =>
   eventManager.add(req.body)
     .then(statusMessage => res.send(statusMessage));
 
-let updateById= (req, res) =>
+let updateById = (req, res) =>
   eventManager.updateById(req.params.id, req.body)
     .then(statusMessage => res.send(statusMessage))
     .catch(err => res.status(404).send(err));
