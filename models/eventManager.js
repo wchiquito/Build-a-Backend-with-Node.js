@@ -1,21 +1,11 @@
 "use strict";
 
-let createHash = require('sha.js');
-let sha256 = createHash('sha256');
+const Event = require('../models/event');
 let _eventList = [];
-
-let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
 let deleteIdProperty = update => {
   if (update.hasOwnProperty('id')) delete update.id;
   return update;
-};
-
-let Event = function(title, description, date) {
-  this.id = createEventHash(this);
-  this.title = title;
-  this.description = description;
-  this.date = date;
 };
 
 let StatusMessage = function(statusCode, message, event) {
