@@ -1,7 +1,7 @@
 "use strict";
 
 const Event = require('../models/event');
-const server = require('../app');
+const server = require('../server');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();

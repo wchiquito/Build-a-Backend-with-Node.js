@@ -2,9 +2,9 @@
   "name": "build-a-backend-with-nodejs",
   "version": "1.0.0",
   "description": "In this course you will learn how to build a production-ready REST API using Node.js and Express.js.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node server.js",
     "test": "mocha --timeout 10000"
   },
   "repository": {
