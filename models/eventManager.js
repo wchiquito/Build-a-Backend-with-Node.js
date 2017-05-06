@@ -55,7 +55,7 @@ let updateById = (id, update) => new Promise((resolve, reject) => {
                                dbController.countEvents(count => {
                                  resolve(new StatusMessage(200, 'Event updated!', count, update));
                                });
-                             } else reject(new StatusMessage(404, 'Event not found'));
+                             } else reject(new StatusMessage(500, results));
   });
 });
 
