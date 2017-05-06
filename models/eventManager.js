@@ -73,8 +73,8 @@ let deleteById = id => new Promise((resolve, reject) => {
 
 let dropCollection = () => new Promise((resolve, reject) => {
   dbController.dropCollection(result => {
-    if (result) resolve(result)
-    else reject(result);
+    if (result) resolve()
+    else reject();
   });
 });
 
