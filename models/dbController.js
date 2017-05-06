@@ -88,4 +88,21 @@ let removeEvent = (pattern, onlyOne, callback) => {
     .catch(error => callback(error));
 };
 
-module.exports = { countEvents, getEvent, insertEvent, updateEvent, removeEvent };
+let dropCollection = callback => {
+  let database = new dbManager;
+  database.connect(config.MONGODB.defaultUri)
+    .then(() => {
+        database.dropCollection(config.MONGODB.defaultCollection)
+          .then(result => {
+            database.close();
+            callback(result);
+          })
+          .catch(error => {
+            database.close();
+            callback(error);
+          });
+    })
+    .catch(error => callback(error));
+};
+
+module.exports = { countEvents, getEvent, insertEvent, updateEvent, removeEvent, dropCollection };

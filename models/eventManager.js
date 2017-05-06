@@ -71,4 +71,11 @@ let deleteById = id => new Promise((resolve, reject) => {
   });
 });
 
-module.exports = { findAll, findById, add, updateById, deleteById };
+let dropCollection = () => new Promise((resolve, reject) => {
+  dbController.dropCollection(result => {
+    if (result) resolve(result)
+    else reject(result);
+  });
+});
+
+module.exports = { findAll, findById, add, updateById, deleteById, dropCollection };

@@ -106,10 +106,10 @@ DB.prototype.updateEvent = (coll, pattern, update) => {
 				reject(error.message);
 			} else {
 				collection.updateOne(pattern, update)
-				.then(result => resolve(result.result.nModified))
-				.catch(error => {
-					console.log('update failed: %s', error.message);
-					reject(error.message);
+					.then(result => resolve(result.result.nModified))
+					.catch(error => {
+						console.log('update failed: %s', error.message);
+						reject(error.message);
 				});
 			}
 		});
@@ -125,11 +125,30 @@ DB.prototype.removeEvent = (coll, pattern, onlyOne) => {
 				reject(error.message);
 			} else {
 				collection.remove(pattern, onlyOne)
-				.then(result => resolve(result.result.n))
-				.catch(error => {
-					console.log('remove failed: %s', error.message);
-					reject(error.message);
-				});
+					.then(result => resolve(result.result.n))
+					.catch(error => {
+						console.log('remove failed: %s', error.message);
+						reject(error.message);
+					});
+			}
+		});
+	});
+}
+
+DB.prototype.dropCollection = coll => {
+	let _this = this;
+	return new Promise((resolve, reject) => {
+    _this.db.collection(coll, (error, collection) => {
+			if (error) {
+				console.log('Could not access collection: %s', error.message);
+				reject(error.message);
+			} else {
+        collection.drop()
+					.then(result => resolve(result))
+					.catch(error => {
+						console.log('drop failed: %s', error.message);
+						reject(error.message);
+					});
 			}
 		});
 	});

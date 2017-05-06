@@ -13,31 +13,35 @@ const idEvent = '6bf9891259f1168c70b71d20635b974d264c751f0453cd4bd22066d0049765e
 
 describe('Testing API REST', () => {
   before(() => {
-    eventManager.add(new Event(
-      "Concierto Metallica",
-      "Evento Musical de calidad",
-      "2017-04-09")
-    );
-    eventManager.add(new Event(
-      "Concierto Red Hot Chilli Peppers",
-      "Evento Musical de calidad maxima",
-      "2017-04-10")
-    );
-    eventManager.add(new Event(
-      "Concierto Maroon 5",
-      "Evento Musical para ligar",
-      "2017-04-11")
-    );
-    eventManager.add(new Event(
-      "Concierto Rolling Stones",
-      "Evento Musical de leyenda",
-      "2017-04-12")
-    );
-    eventManager.add(new Event(
-      "Concierto Mago de Oz",
-      "Evento Musical de ponerse en pie y alzar el puño",
-      "2017-04-13")
-    );
+    eventManager.dropCollection()
+      .then(() => {
+        eventManager.add(new Event(
+          "Concierto Metallica",
+          "Evento Musical de calidad",
+          "2017-04-09")
+        );
+        eventManager.add(new Event(
+          "Concierto Red Hot Chilli Peppers",
+          "Evento Musical de calidad maxima",
+          "2017-04-10")
+        );
+        eventManager.add(new Event(
+          "Concierto Maroon 5",
+          "Evento Musical para ligar",
+          "2017-04-11")
+        );
+        eventManager.add(new Event(
+          "Concierto Rolling Stones",
+          "Evento Musical de leyenda",
+          "2017-04-12")
+        );
+        eventManager.add(new Event(
+          "Concierto Mago de Oz",
+          "Evento Musical de ponerse en pie y alzar el puño",
+          "2017-04-13")
+        );
+      })
+      .catch(() => {});
   });
 
   describe('Hello World Test!', () => {
