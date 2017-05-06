@@ -12,11 +12,11 @@ server.listen(config.PORT, () => console.log('App listening on port %d on %s!', 
 
 server.get('/', (req, res) => res.send('Build a Backend with Node.js and Express.js'));
 
-server.route("/events")
+server.route('/events')
   .get(events.findAll)
   .post(events.add);
 
-server.route("/events/:id")
+server.route('/events/:_id')
   .get(events.findById)
   .put(events.updateById)
   .delete(events.deleteById);
