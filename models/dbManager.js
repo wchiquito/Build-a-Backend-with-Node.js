@@ -78,47 +78,6 @@ DB.prototype.getEvent = (coll, pattern) => {
 	});
 }
 
-/*DB.prototype.getAllEvents = coll => {
-	let _this = this;
-	return new Promise((resolve, reject) => {
-    _this.db.collection(coll, (error, collection) => {
-			if (error) {
-				console.log('Could not access collection: %s', error.message);
-				reject(error.message);
-			} else {
-        collection.find()
-          .toArray((error, eventArray) => {
-              if (error) {
-                console.log('Error reading from toArray: %s', error.message);
-                reject(error.message);
-              } else {
-                resolve(eventArray);
-              }
-          });
-			}
-		});
-	});
-}
-
-DB.prototype.getEvent = (coll, pattern) => {
-	let _this = this;
-	return new Promise((resolve, reject) => {
-    _this.db.collection(coll, (error, collection) => {
-			if (error) {
-				console.log('Could not access collection: %s', error.message);
-				reject(error.message);
-			} else {
-        collection.findOne(pattern, (error, event) => {
-					if (error) {
-						console.log('Find failed: %s', error.message);
-						reject(error.message);
-					} else resolve(event);
-				});
-			}
-		});
-	});
-}*/
-
 DB.prototype.insertEvent = (coll, newEvent) => {
   let _this = this;
 	return new Promise((resolve, reject) => {

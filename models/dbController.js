@@ -20,23 +20,6 @@ let countEvents = callback => {
     .catch(error => callback(error));
 };
 
-/*let getAllEvents = callback => {
-  let database = new dbManager;
-  database.connect(config.MONGODB.defaultUri)
-    .then(() => {
-        database.getAllEvents(config.MONGODB.defaultCollection)
-          .then(events => {
-            database.close();
-            callback(events);
-          })
-          .catch(error => {
-            database.close();
-            callback(error);
-          });
-    })
-    .catch(error => callback(error));
-};*/
-
 let getEvent = (pattern, callback) => {
   let database = new dbManager;
   database.connect(config.MONGODB.defaultUri)
@@ -105,4 +88,4 @@ let removeEvent = (pattern, onlyOne, callback) => {
     .catch(error => callback(error));
 };
 
-module.exports = { countEvents/*, getAllEvents*/, getEvent, insertEvent, updateEvent, removeEvent };
+module.exports = { countEvents, getEvent, insertEvent, updateEvent, removeEvent };

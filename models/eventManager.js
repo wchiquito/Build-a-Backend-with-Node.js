@@ -72,20 +72,3 @@ let deleteById = id => new Promise((resolve, reject) => {
 });
 
 module.exports = { findAll, findById, add, updateById, deleteById };
-
-/**************************
-let _eventList = [];
-
-let deleteIdProperty = update => {
-  if (update.hasOwnProperty('id')) delete update.id;
-  return update;
-};
-
-let compareById = (event, id) => event.id === id;
-
-let findIndexById = id => {
-  let index = _eventList.findIndex(event => compareById(event, id));
-  if (index > -1) return index;
-  else new StatusMessage(404, 'Event not found');
-};
-**************************/
