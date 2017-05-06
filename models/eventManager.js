@@ -33,7 +33,7 @@ let findById = id => new Promise((resolve, reject) => {
                         });
 });
 
-let add = event => new Promise(resolve => {
+let add = event => new Promise((resolve, reject) => {
   let newEvent = new Event(event.title,
                            event.description,
                            event.date);
@@ -51,7 +51,7 @@ let updateById = (id, update) => new Promise((resolve, reject) => {
   dbController.updateEvent({ _id: id },
                            update,
                            result => {
-                             if (result === 1) {
+                             if (result > -1) {
                                dbController.countEvents(count => {
                                  resolve(new StatusMessage(200, 'Event updated!', count, update));
                                });

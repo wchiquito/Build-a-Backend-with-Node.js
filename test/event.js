@@ -19,27 +19,27 @@ describe('Testing API REST', () => {
           "Concierto Metallica",
           "Evento Musical de calidad",
           "2017-04-09")
-        );
+        ).catch(() => {});
         eventManager.add(new Event(
           "Concierto Red Hot Chilli Peppers",
           "Evento Musical de calidad maxima",
           "2017-04-10")
-        );
+        ).catch(() => {});
         eventManager.add(new Event(
           "Concierto Maroon 5",
           "Evento Musical para ligar",
           "2017-04-11")
-        );
+        ).catch(() => {});
         eventManager.add(new Event(
           "Concierto Rolling Stones",
           "Evento Musical de leyenda",
           "2017-04-12")
-        );
+        ).catch(() => {});
         eventManager.add(new Event(
           "Concierto Mago de Oz",
           "Evento Musical de ponerse en pie y alzar el puño",
           "2017-04-13")
-        );
+        ).catch(() => {});
       })
       .catch(() => {});
   });
