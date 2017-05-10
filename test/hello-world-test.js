@@ -16,23 +16,23 @@ describe('API REST', () => {
     dbController.insertEventDocument(new Event.Event(
       "Concierto Metallica",
       "Evento Musical de calidad",
-      "2017-04-09"));
+      "2017-04-09"), () => console.log('inserted'));
     dbController.insertEventDocument(new Event.Event(
       "Concierto Red Hot Chilli Peppers",
       "Evento Musical de calidad maxima",
-      "2017-04-10"));
+      "2017-04-10"), () => console.log('inserted'));
     dbController.insertEventDocument(new Event.Event(
       "Concierto Maroon 5",
       "Evento Musical para ligar",
-      "2017-04-11"));
+      "2017-04-11"), () => console.log('inserted'));
     dbController.insertEventDocument(new Event.Event(
       "Concierto Rolling Stones",
       "Evento Musical de leyenda",
-      "2017-04-12"));
+      "2017-04-12"), () => console.log('inserted'));
     dbController.insertEventDocument(new Event.Event(
       "Concierto Mago de Oz",
       "Evento Musical de ponerse en pie y alzar el puño",
-      "2017-04-13"));
+      "2017-04-13"), () => console.log('inserted'));
   });
 
   describe('Hello World Test!', () => {
@@ -68,21 +68,19 @@ describe('API REST', () => {
 
   describe('/POST a new event', () => {
       it('should POST a new event', (done) => {
-          //let newEvent = new Event('Dualipa', 'Female Singer', '1988');
-          let fakeEvent = {
-              "title": "Duaplipa",
-              "description": "Female Singer",
-              "date": "1988"
-              }
-          let fakeSuccesResponse = {status: 200, message: 'Event added!', length: 6, event: fakeEvent};
+          let realEvent = new Event.Event(
+            "Concierto Rolling Stones",
+            "Evento Musical de leyenda",
+            "2017-04-12");
 
           chai.request(server)
               .post('/events')
-              .send(fakeEvent)
+              .send(realEvent)
               .end((err, res) => {
-                  fakeSuccesResponse.event.id = res.body.event.id;
                   res.should.have.status(200);
-                  res.body.should.be.eql(fakeSuccesResponse)
+                  res.body.event.title.should.be.equal(realEvent.title);
+                  res.body.event.description.should.be.equal(realEvent.description);
+                  res.body.event.date.should.be.equal(realEvent.date);
                   done();
           })
       });
@@ -91,14 +89,14 @@ describe('API REST', () => {
   describe('/PUT an update on a single event by id', () => {
       it('should update an specific event by id (sha1)', (done) => {
           let fakeEvent = {
-              "id": "68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b",
+              "id": idEvent,
               "title": "Duaplipa",
               "description": "Female Singer",
               "date": "1988"
           };
-          let fakeSuccesResponse = {status: 200, message: 'Event updated!', length: 6, event: fakeEvent};
+          let fakeSuccesResponse = {status: 200, message: 'Event updated!', event: fakeEvent};
           chai.request(server)
-              .put('/events/68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b')
+              .put(`/events/${idEvent}`)
               .send(fakeEvent)
               .end((err, res) => {
                   res.should.have.status(200);
@@ -111,14 +109,14 @@ describe('API REST', () => {
   describe('/DELETE a single event by id', () => {
       it('should delete an specific event by id (sha1)', (done) => {
           let fakeEvent = {
-              "id": "68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b",
+              "id": idEvent,
               "title": "Duaplipa",
               "description": "Female Singer",
               "date": "1988"
           };
-          let fakeSuccesResponse = {status: 200, message: 'Event deleted!', length: 5, event: fakeEvent};
+          let fakeSuccesResponse = {status: 200, message: 'Event deleted!'};
           chai.request(server)
-              .delete('/events/68819422197e5f1ddcc24903a84594677c687e701c623cd282cd59d8e5e4df2b')
+              .delete(`/events/${idEvent}`)
               .end((err, res) => {
                   res.should.have.status(200);
                   res.body.should.be.eql(fakeSuccesResponse);

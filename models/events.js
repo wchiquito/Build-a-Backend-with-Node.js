@@ -11,9 +11,7 @@ let findAll = () => new Promise(resolve => {
 });
 
 let findById = id => new Promise((resolve, reject) => {
-  /*let event = _eventList.find(event => compareById(event, id));
-  if (event) resolve(event);
-  else reject(new EventError());*/
+
   dbController.getEventById(id, result => resolve(result));
 });
 
@@ -27,38 +25,24 @@ let add = event => new Promise(resolve => {
   let newEvent = new Event(event.title,
                             event.description,
                             event.date);
-  console.log('Created new event', newEvent);
-  //_eventList.push(newEvent);
-  dbController.insertEventDocument(newEvent, added => {
-    console.log("fin");
+    dbController.insertEventDocument(newEvent, added => {
     resolve(new StatusMessage(200, 'Event Added!', added));
   });
 });
 
 let updateById = (id, update) =>
   new Promise((resolve, reject) => {
-    //let index = findIndexById(id);
-    //if (index > -1) {
-      //_eventList.splice(index, 1, update);
-      
-   // }
-    //else reject(new EventError());
-    dbController.findAndUpdate(id,update, result =>  resolve(new StatusMessage(200, 'Event updated!', result)));
+    dbController.findAndUpdate(id, update, result =>  resolve(new StatusMessage(200, 'Event updated!', result)));
 });
 
 let deleteById = id =>
   new Promise((resolve, reject) => {
-    let index = findIndexById(id);
-    if (index > -1) {
-      let event = _eventList.splice(index, 1);
-      resolve(new StatusMessage(200, 'Event deleted!', event[0]));
-    } else reject(new EventError());
+    dbController.deleteById(id, result => resolve(new StatusMessage(200, 'Event deleted!')))
 });
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
 let Event = function(title, description, date) {
-  //this.id = createEventHash(this);
   this.title = title;
   this.description = description;
   this.date = date;
@@ -71,11 +55,11 @@ let EventError = function() {
   }
 };
 
-let StatusMessage = function(statusCode, message, event) {
-    this.status = statusCode;
-    this.message = message || 'Operation finished';
-    this.length = _eventList.length;
-    this.event = event;
+let StatusMessage = function(...args) {
+    this.status = args[0];
+    this.message = args[1] || 'Operation finished';
+    //this.length = _eventList.length;
+    if (args[2]) this.event = args[2];
 };
 
 module.exports = { findAll, findById, add, updateById, deleteById, Event};

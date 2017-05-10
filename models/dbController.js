@@ -12,21 +12,14 @@ let helloDatabase = function () {
 };
 
 let insertEventDocument = function(event, callback) {
-console.log('Executing insertEventDocument');
-
   MongoClient.connect(mongoURL, function(err, db) {
         assert.equal(null, err);
-        console.log('Trying to connect to collection events');
-
         let collection = db.collection('events');
-        console.log('Conected to collection events')
-        // Insert some documents
         collection.insertOne(event, function(err, result) {
             assert.equal(err, null);
             assert.equal(1, result.result.n);
             assert.equal(1, result.ops.length);
-            console.log("Inserted 1 Event into the collection");
-            callback(result);
+            callback(event);
         });
         db.close();
     });
@@ -52,16 +45,16 @@ let getEventById = (idEvent, callback)  => {
     });
 };
 
-let findAndUpdate = function (title, update, callback) {
+
+let findAndUpdate = function (idEvent, update, callback) {
     MongoClient.connect(mongoURL, function (err,db) {
         assert.equal(null, err);
         let collection = db.collection('events');
-        eventMatched = collection.findOne({title: title})
-        collection.updateOne({title: title},
+        collection.updateOne({_id: new ObjectID(idEvent)},
             {$set: update}, (err, result) => {
                 assert.equal(err, null);
                 assert.equal(1, result.result.n);
-                callback(result);
+                callback(update);
             }
          );
     });
@@ -74,4 +67,17 @@ let dropCollection = () => {
   });
 };
 
-module.exports = {helloDatabase, insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection};
+let deleteById = (id, callback) => {
+  MongoClient.connect(mongoURL, (err, db) => {
+    assert.equal(null, err);
+
+    db.collection('events').remove({"_id": new ObjectID(id) }, (err, result)=> {
+      assert.equal(null, err);
+      assert.equal(1, result.result.n);
+      callback(result);
+      db.close();
+    } )
+  });
+};
+
+module.exports = {helloDatabase, insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById};
