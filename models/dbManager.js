@@ -154,7 +154,7 @@ DB.prototype.dropCollection = coll => {
                 });
               }
           });
-        } else reject('collection not found');
+        } else reject('collections not found');
       });
 	});
 }
