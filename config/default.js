@@ -5,7 +5,7 @@ const config = {
   NODE_ENV: process.env.NODE_ENV || 'development',
   MONGODB: {
     defaultCollection: 'events',
-    defaultUri: 'mongodb://localhost:27017/events-inc'
+    defaultUri: 'mongodb://localhost:27017/emvents-inc'
   }
 };
 
