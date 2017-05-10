@@ -138,19 +138,24 @@ DB.prototype.removeEvent = (coll, pattern, onlyOne) => {
 DB.prototype.dropCollection = coll => {
 	let _this = this;
 	return new Promise((resolve, reject) => {
-    _this.db.collection(coll, (error, collection) => {
-			if (error) {
-				console.log('Could not access collection: %s', error.message);
-				reject(error.message);
-			} else {
-        collection.drop()
-					.then(result => resolve(result))
-					.catch(error => {
-						console.log('drop failed: %s', error.message);
-						reject(error.message);
-					});
-			}
-		});
+    _this.db.collections()
+      .then(collections => {
+        if (collections.length > 0) {
+          _this.db.collection(coll, (error, collection) => {
+            if (error) {
+              console.log('Could not access collection: %s', error.message);
+              reject(error.message);
+            } else {
+              collection.drop()
+                .then(result => resolve(result))
+                .catch(error => {
+                  console.log('drop failed: %s', error.message);
+                  reject(error.message);
+                });
+              }
+          });
+        } else reject('collection not found');
+      });
 	});
 }
 
