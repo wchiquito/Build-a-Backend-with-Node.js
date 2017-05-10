@@ -1,4 +1,5 @@
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 const mongoURL = 'mongodb://localhost:27017/events-inc';
 const assert = require('assert');
 
@@ -40,6 +41,17 @@ let getAllEvents = function (callback) {
     });
 };
 
+let getEventById = (idEvent, callback)  => {
+     MongoClient.connect(mongoURL, (err, db) => {
+        assert.equal(null, err);
+        let collection = db.collection('events');
+        collection.findOne({ _id: new ObjectID(idEvent)})
+          .then(event => callback(event))
+          .catch(err => callback(err)
+          .then(() => db.close()));
+    });
+};
+
 let findAndUpdate = function (title, update, callback) {
     MongoClient.connect(mongoURL, function (err,db) {
         assert.equal(null, err);
@@ -55,5 +67,11 @@ let findAndUpdate = function (title, update, callback) {
     });
 };
 
+let dropCollection = () => {
+  MongoClient.connect(mongoURL, (err, db) => {
+    assert.equal(null, err);
+    db.collection('events').drop();
+  });
+};
 
-module.exports = {helloDatabase, insertEventDocument, getAllEvents, findAndUpdate};
+module.exports = {helloDatabase, insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection};

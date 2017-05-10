@@ -7,13 +7,14 @@ let _eventList = [];
 let compareById = (event, id) => event.id === id;
 
 let findAll = () => new Promise(resolve => {
-  dbController.getAllEvents( result => resolve(result));
+  dbController.getAllEvents(result => resolve(result));
 });
 
 let findById = id => new Promise((resolve, reject) => {
-  let event = _eventList.find(event => compareById(event, id));
+  /*let event = _eventList.find(event => compareById(event, id));
   if (event) resolve(event);
-  else reject(new EventError());
+  else reject(new EventError());*/
+  dbController.getEventById(id, result => resolve(result));
 });
 
 let findIndexById = id => {
@@ -28,9 +29,10 @@ let add = event => new Promise(resolve => {
                             event.date);
   console.log('Created new event', newEvent);
   //_eventList.push(newEvent);
-  dbController.insertEventDocument(newEvent, () => console.log("fin") )
-  resolve(new StatusMessage(200, 'Event Added!', added));
-  
+  dbController.insertEventDocument(newEvent, added => {
+    console.log("fin");
+    resolve(new StatusMessage(200, 'Event Added!', added));
+  });
 });
 
 let updateById = (id, update) =>
@@ -62,8 +64,6 @@ let Event = function(title, description, date) {
   this.date = date;
 };
 
-
-
 let EventError = function() {
   return {
     status: 404,
@@ -77,26 +77,5 @@ let StatusMessage = function(statusCode, message, event) {
     this.length = _eventList.length;
     this.event = event;
 };
-
-add(new Event(
-  "Concierto Metallica",
-  "Evento Musical de calidad",
-  "2017-04-09"));
-add(new Event(
-  "Concierto Red Hot Chilli Peppers",
-  "Evento Musical de calidad maxima",
-  "2017-04-10"));
-add(new Event(
-  "Concierto Maroon 5",
-  "Evento Musical para ligar",
-  "2017-04-11"));
-add(new Event(
-  "Concierto Rolling Stones",
-  "Evento Musical de leyenda",
-  "2017-04-12"));
-add(new Event(
-  "Concierto Mago de Oz",
-  "Evento Musical de ponerse en pie y alzar el puño",
-  "2017-04-13"));
 
 module.exports = { findAll, findById, add, updateById, deleteById, Event};
