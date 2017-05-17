@@ -1,4 +1,4 @@
-let eventManager = require('../models/events');
+let eventManager = require('../models/eventHandler');
 
 function findAll(req, res) {
   eventManager.findAll()

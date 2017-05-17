@@ -1,5 +1,9 @@
 const createHash = require('sha.js');
 const dbController = require('./dbController');
+const Event = require('./Event');
+const EventError = require('./EventError');
+const StatusMessage = require('./StatusMessage');
+
 let sha256 = createHash('sha256');
 
 let _eventList = [];
@@ -41,25 +45,5 @@ let deleteById = id =>
 });
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
-
-let Event = function(title, description, date) {
-  this.title = title;
-  this.description = description;
-  this.date = date;
-};
-
-let EventError = function() {
-  return {
-    status: 404,
-    message: "Event not found"
-  }
-};
-
-let StatusMessage = function(...args) {
-    this.status = args[0];
-    this.message = args[1] || 'Operation finished';
-    //this.length = _eventList.length;
-    if (args[2]) this.event = args[2];
-};
 
 module.exports = { findAll, findById, add, updateById, deleteById, Event};

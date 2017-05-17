@@ -1,15 +1,17 @@
 const MongoClient = require('mongodb').MongoClient;
-const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
 const mongoURL = 'mongodb://localhost:27017/events-inc';
 const assert = require('assert');
 
-let helloDatabase = () => mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
+let helloDatabase = function () {
+    MongoClient.connect(mongoURL, function(err, db) {
+        assert.equal(null, err);
+        console.log("Connected successfully to server");
+        db.close();
+    });
+};
 
 let insertEventDocument = function(event, callback) {
-
-    //mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
-
   MongoClient.connect(mongoURL, function(err, db) {
         assert.equal(null, err);
         let collection = db.collection('events');

@@ -1,4 +1,7 @@
-const Event = require('../models/events');
+const eventHandler = require('../models/eventHandler');
+const Event = require('../models/Event');
+const EventError = require('../models/EventError');
+const StatusMessage = require('../models/StatusMessage');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const assert = chai.assert;
@@ -13,23 +16,23 @@ let idEvent;
 describe('API REST', () => {
   before(() => {
     dbController.dropCollection();
-    dbController.insertEventDocument(new Event.Event(
+    dbController.insertEventDocument(new Event(
       "Concierto Metallica",
       "Evento Musical de calidad",
       "2017-04-09"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event.Event(
+    dbController.insertEventDocument(new Event(
       "Concierto Red Hot Chilli Peppers",
       "Evento Musical de calidad maxima",
       "2017-04-10"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event.Event(
+    dbController.insertEventDocument(new Event(
       "Concierto Maroon 5",
       "Evento Musical para ligar",
       "2017-04-11"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event.Event(
+    dbController.insertEventDocument(new Event(
       "Concierto Rolling Stones",
       "Evento Musical de leyenda",
       "2017-04-12"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event.Event(
+    dbController.insertEventDocument(new Event(
       "Concierto Mago de Oz",
       "Evento Musical de ponerse en pie y alzar el puño",
       "2017-04-13"), () => console.log('inserted'));
@@ -68,7 +71,7 @@ describe('API REST', () => {
 
   describe('/POST a new event', () => {
       it('should POST a new event', (done) => {
-          let realEvent = new Event.Event(
+          let realEvent = new Event(
             "Concierto Rolling Stones",
             "Evento Musical de leyenda",
             "2017-04-12");
