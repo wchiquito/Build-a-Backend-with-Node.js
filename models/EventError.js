@@ -1,8 +1,16 @@
-const EventError = function() {
-  return {
-    status: 404,
-    message: "Event not found"
-  }
-};
+const Mongoose = require('mongoose');
 
-module.exports = EventError;
+const EventErrorSchema = Mongoose.Schema({
+    status: {
+        type: Number,
+        default: 404,
+        required: true
+    },
+    message: {
+        type: String,
+        default: "Event not found",
+        required: true
+    }
+});
+
+module.exports = mongoose.model('EventError', EventErrorSchema);
