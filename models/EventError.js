@@ -13,4 +13,4 @@ const EventErrorSchema = Mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('EventError', EventErrorSchema);
+module.exports = Mongoose.model('EventError', EventErrorSchema);

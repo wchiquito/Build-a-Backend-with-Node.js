@@ -12,4 +12,4 @@ const StatusMessageSchema = Mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('StatusMessage', StatusMessageSchema);
+module.exports = Mongoose.model('StatusMessage', StatusMessageSchema);

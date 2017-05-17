@@ -4,9 +4,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const events = require('./routes/events');
-const dbController = require('./models/dbController');
+const mongoose = require('mongoose');
+//const dbController = require('./models/dbController');
+const mongoURL = 'mongodb://localhost:27017/events-inc';
 
-
+mongoose.connect(mongoURL);
+mongoose.Promise = global.Promise;
+let db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 app.use(bodyParser.json({ type: 'application/json' }));
 
@@ -23,7 +28,6 @@ app.route("/events/:id")
   .put(events.updateById)
   .delete(events.deleteById);
 
-dbController.helloDatabase();
-
+//dbController.helloDatabase();
 
 module.exports = app;

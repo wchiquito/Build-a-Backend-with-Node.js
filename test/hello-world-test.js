@@ -15,27 +15,27 @@ let idEvent;
 
 describe('API REST', () => {
   before(() => {
-    dbController.dropCollection();
-    dbController.insertEventDocument(new Event(
-      "Concierto Metallica",
-      "Evento Musical de calidad",
-      "2017-04-09"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event(
-      "Concierto Red Hot Chilli Peppers",
-      "Evento Musical de calidad maxima",
-      "2017-04-10"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event(
-      "Concierto Maroon 5",
-      "Evento Musical para ligar",
-      "2017-04-11"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event(
-      "Concierto Rolling Stones",
-      "Evento Musical de leyenda",
-      "2017-04-12"), () => console.log('inserted'));
-    dbController.insertEventDocument(new Event(
-      "Concierto Mago de Oz",
-      "Evento Musical de ponerse en pie y alzar el puño",
-      "2017-04-13"), () => console.log('inserted'));
+    //dbController.dropCollection();
+    dbController.insertEventDocument(new Event({
+        title: "Concierto Metallica",
+        description: "Evento Musical de calidad",
+        date: "2017-04-09"}), () => console.log('inserted'));
+    dbController.insertEventDocument(new Event({
+      title: "Concierto Red Hot Chilli Peppers",
+      description: "Evento Musical de calidad maxima",
+      date: "2017-04-10"}), () => console.log('inserted'));
+    dbController.insertEventDocument(new Event({
+      title: "Concierto Maroon 5",
+      description: "Evento Musical para ligar",
+      date: "2017-04-11"}), () => console.log('inserted'));
+    dbController.insertEventDocument(new Event({
+      title: "Concierto Rolling Stones",
+      description: "Evento Musical de leyenda",
+      date: "2017-04-12"}), () => console.log('inserted'));
+    dbController.insertEventDocument(new Event({
+      title: "Concierto Mago de Oz",
+      description: "Evento Musical de ponerse en pie y alzar el puño",
+      date: "2017-04-13"}), () => console.log('inserted'));
   });
 
   describe('Hello World Test!', () => {

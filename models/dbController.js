@@ -1,26 +1,16 @@
 const MongoClient = require('mongodb').MongoClient;
-const mongoose = require('mongoose');
 const ObjectID = require('mongodb').ObjectID;
-const mongoURL = 'mongodb://localhost:27017/events-inc';
 const assert = require('assert');
+const Event = require('./Event');
+const mongoose = require('mongoose');
 
-let helloDatabase = () => mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
+//let helloDatabase = () => mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
 
 let insertEventDocument = function(event, callback) {
-
-    //mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
-
-  MongoClient.connect(mongoURL, function(err, db) {
-        assert.equal(null, err);
-        let collection = db.collection('events');
-        collection.insertOne(event, function(err, result) {
-            assert.equal(err, null);
-            assert.equal(1, result.result.n);
-            assert.equal(1, result.ops.length);
-            callback(event);
-        });
-        db.close();
-    });
+  let newEvent = new Event(event);
+  newEvent.save()
+    .then(newEvent => console.log('Inserted Event'))
+    .catch(err => console.log('Error inserting Event'));
 };
 
 let getAllEvents = function (callback) {
@@ -78,4 +68,4 @@ let deleteById = (id, callback) => {
   });
 };
 
-module.exports = {helloDatabase, insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById};
+module.exports = {/*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById};
