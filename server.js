@@ -28,6 +28,9 @@ app.route("/events/:id")
   .put(events.updateById)
   .delete(events.deleteById);
 
+app.route("/event/find")
+  .post(events.find);
+
 //dbController.helloDatabase();
 
 module.exports = app;

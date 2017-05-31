@@ -41,4 +41,10 @@ let deleteById = (idEvent, callback) => {
     .catch(err => callback(err));
 };
 
-module.exports = { /*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById };
+let find = (filter, callback)  => {
+  let query = Event.find(filter)
+    .then(event => callback(event))
+    .catch(err => callback(err)); 
+};
+
+module.exports = { /*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById, find };

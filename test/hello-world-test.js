@@ -119,4 +119,22 @@ describe('API REST', () => {
         });
     });
   });
+
+  describe('/GET one single event by title', () => {
+    it('should GET an specific event by title', (done) => {
+      let eventFilter = {
+        title: "Concierto Rolling Stones II"
+      };
+      chai.request(server)
+        .post('/event/find')
+        .send(eventFilter)
+        .end((err, res) => {
+          let event = res.body[0];
+          res.should.have.status(200);
+          event.should.be.a('Object');
+          event.title.should.be.eql(eventFilter.title);
+          done();
+        });
+    });
+  });
 });

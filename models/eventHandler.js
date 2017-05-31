@@ -41,4 +41,9 @@ let deleteById = id =>
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
-module.exports = { findAll, findById, add, updateById, deleteById/*, Event*/ };
+let find = filter =>
+  new Promise(resolve => {
+    dbController.find(filter, result => resolve(result));
+});
+
+module.exports = { findAll, findById, add, updateById, deleteById, find/*, Event*/ };

@@ -28,4 +28,10 @@ function deleteById(req, res) {
     .catch(err => res.status(404).send(err));
 }
 
-module.exports = { findAll, findById, add, updateById, deleteById };
+function find(req, res) {
+  eventManager.find(req.body)
+    .then(statusMessage => res.send(statusMessage))
+    .catch(err => res.status(404).send(err));
+}
+
+module.exports = { findAll, findById, add, updateById, deleteById, find };
