@@ -24,9 +24,12 @@ const UserSchema = Mongoose.Schema({
     },
     dateCreated:{
         type: Date,
-        default: Date.now(),
-        required: true
+        default: Date.now()
     }
 });
+
+UserSchema.methods.verifyPassword = function(password) {
+    return true;
+};
 
 module.exports = Mongoose.model('User', UserSchema);
