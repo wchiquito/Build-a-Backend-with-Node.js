@@ -30,10 +30,7 @@ const UserSchema = Mongoose.Schema({
 });
 
 UserSchema.methods.verifyPassword = function(password) {
-    //return bcrypt.compareSync(password, this.password);
-    return password === this.password;
+  return bcrypt.compareSync(password, this.password);
 };
-
-
 
 module.exports = Mongoose.model('User', UserSchema);
