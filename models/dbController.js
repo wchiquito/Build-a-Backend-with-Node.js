@@ -9,63 +9,36 @@ const mongoose = require('mongoose');
 let insertEventDocument = function(event, callback) {
   let newEvent = new Event(event);
   newEvent.save()
-    .then(newEvent => console.log('Inserted Event'))
-    .catch(err => console.log('Error inserting Event'));
+    .then(newEvent => callback(newEvent))
+    .catch(err => callback(err));
 };
 
 let getAllEvents = function (callback) {
-     MongoClient.connect(mongoURL, function(err, db) {
-        assert.equal(null, err);
-        let collection = db.collection('events');
-        collection.find({}).toArray((err, docs) => callback(docs));
-        db.close();
-    });
+  let query = Event.find()
+    .then(events => callback(events))
+    .catch(err => callback(err));
 };
 
 let getEventById = (idEvent, callback)  => {
-     MongoClient.connect(mongoURL, (err, db) => {
-        assert.equal(null, err);
-        let collection = db.collection('events');
-        collection.findOne({ _id: new ObjectID(idEvent)})
-          .then(event => callback(event))
-          .catch(err => callback(err)
-          .then(() => db.close()));
-    });
+  let query = Event.find({ _id: idEvent })
+    .then(event => callback(event))
+    .catch(err => callback(err)); 
 };
 
-
 let findAndUpdate = function (idEvent, update, callback) {
-    MongoClient.connect(mongoURL, function (err,db) {
-        assert.equal(null, err);
-        let collection = db.collection('events');
-        collection.updateOne({_id: new ObjectID(idEvent)},
-            {$set: update}, (err, result) => {
-                assert.equal(err, null);
-                assert.equal(1, result.result.n);
-                callback(update);
-            }
-         );
-    });
+  let query = Event.update({ _id: idEvent }, update)
+    .then(event => callback(event))
+    .catch(err => callback(err));
 };
 
 let dropCollection = () => {
-  MongoClient.connect(mongoURL, (err, db) => {
-    assert.equal(null, err);
-    db.collection('events').drop();
-  });
+  Event.collection.drop();
 };
 
-let deleteById = (id, callback) => {
-  MongoClient.connect(mongoURL, (err, db) => {
-    assert.equal(null, err);
-
-    db.collection('events').remove({"_id": new ObjectID(id) }, (err, result)=> {
-      assert.equal(null, err);
-      assert.equal(1, result.result.n);
-      callback(result);
-      db.close();
-    } )
-  });
+let deleteById = (idEvent, callback) => {
+  let query = Event.remove({ _id: idEvent })
+    .then(event => callback(event))
+    .catch(err => callback(err));
 };
 
-module.exports = {/*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById};
+module.exports = { /*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById };

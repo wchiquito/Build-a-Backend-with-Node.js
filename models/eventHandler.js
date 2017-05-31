@@ -15,7 +15,6 @@ let findAll = () => new Promise(resolve => {
 });
 
 let findById = id => new Promise((resolve, reject) => {
-
   dbController.getEventById(id, result => resolve(result));
 });
 
@@ -25,25 +24,21 @@ let findIndexById = id => {
   else new EventError();
 };
 
-let add = event => new Promise(resolve => { 
-  let newEvent = new Event(event.title,
-                            event.description,
-                            event.date);
-    dbController.insertEventDocument(newEvent, added => {
-    resolve(new StatusMessage(200, 'Event Added!', added));
-  });
+let add = event =>
+  new Promise(resolve => {
+    dbController.insertEventDocument(event, added => resolve(added));
 });
 
 let updateById = (id, update) =>
-  new Promise((resolve, reject) => {
-    dbController.findAndUpdate(id, update, result =>  resolve(new StatusMessage(200, 'Event updated!', result)));
+  new Promise(resolve => {
+    dbController.findAndUpdate(id, update, result => resolve(result));
 });
 
 let deleteById = id =>
-  new Promise((resolve, reject) => {
-    dbController.deleteById(id, result => resolve(new StatusMessage(200, 'Event deleted!')))
+  new Promise(resolve => {
+    dbController.deleteById(id, result => resolve(result));
 });
 
 let createEventHash = event => sha256.update(event, 'utf8').digest('hex');
 
-module.exports = { findAll, findById, add, updateById, deleteById, Event};
+module.exports = { findAll, findById, add, updateById, deleteById/*, Event*/ };
