@@ -9,6 +9,10 @@ chai.use(chaiHttp);
 
 let idEvent;
 
+describe('Hello Event-Tests!', () => {
+    it('First test', () => assert.equal( true , 1 === 1 , "Everything is alright!"));
+});
+
 describe('API REST', () => {
   before(() => {
     dbController.dropCollection();
@@ -34,9 +38,7 @@ describe('API REST', () => {
       date: "2017-04-13"}, () => {});
   });
 
-  describe('Hello World Test!', () => {
-      it('First test', () => assert.equal( true , 1 === 1 , "Everything is alright!"));
-  });
+
 
   describe('/GET all Events', () => {
     it('should GET all Events', (done) => {

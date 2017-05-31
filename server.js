@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const events = require('./routes/events');
+const users = require('./routes/users');
 const mongoose = require('mongoose');
 //const dbController = require('./models/dbController');
 const mongoURL = 'mongodb://localhost:27017/events-inc';
@@ -30,6 +31,9 @@ app.route("/events/:id")
 
 app.route("/event/find")
   .post(events.find);
+
+app.route("/logintest")
+  .get(users.test);
 
 //dbController.helloDatabase();
 
