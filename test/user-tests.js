@@ -12,7 +12,7 @@ describe('Hello User-Tests!', () => {
     it('Sanity test', () => assert.equal(true, 1 === 1, "Everything is alright!"));
 });
 
-describe('User Managment Tests', () => {
+describe('User Managment Tests - ', () => {
     before(() => {
         dbController.dropCollection();
         dbController.insertUserDocument(
@@ -38,8 +38,17 @@ describe('User Managment Tests', () => {
     });
 
 
-    describe('User should be created with encrypted password', () => {
-
+    describe('User should be logged successfully with demo user,', () => {
+            it('should return username and email after successful loggin', (done) => {
+                        chai.request(server)
+                            .get('/test')
+                            .auth('hugo', 'secreto')
+                            .end((err, res) => {
+                                res.should.have.status(200);
+                                res.body.should.be.eql({ "username": "hugo",  "email": "hugo@gmail.com"});
+                                done();
+                            });
+                    });
     });
 
 
