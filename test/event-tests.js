@@ -4,10 +4,20 @@ const chaiHttp = require('chai-http');
 const assert = chai.assert;
 const server = require('../server');
 const dbController = require('../models/dbController');
+/*const User = require('../models/User');
+const dummyUser = User.dummyUser;*/
 
 chai.use(chaiHttp);
 
 let idEvent;
+
+const dummyUser = {
+  "username": "hugo",
+  "password": "secreto",
+  "email": "hugo@gmail.com",
+  "address": "Calle",
+  "fullname": "HugoN"
+};
 
 describe('Hello Event-Tests!', () => {
     it('First test', () => assert.equal( true , 1 === 1 , "Everything is alright!"));
@@ -38,12 +48,11 @@ describe('API REST', () => {
       date: "2017-04-13"}, () => {});
   });
 
-
-
   describe('/GET all Events', () => {
     it('should GET all Events', (done) => {
       chai.request(server)
         .get('/events')
+        .auth(dummyUser.username, dummyUser.password)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
@@ -58,6 +67,7 @@ describe('API REST', () => {
     it('should GET an specific event by id (sha1)', (done) => {
       chai.request(server)
         .get(`/events/${idEvent}`)
+        .auth(dummyUser.username, dummyUser.password)
         .end((err, res) => {
           let event = res.body[0];
           res.should.have.status(200);
@@ -77,6 +87,7 @@ describe('API REST', () => {
       };
       chai.request(server)
         .post('/events')
+        .auth(dummyUser.username, dummyUser.password)
         .send(newEvent)
         .end((err, res) => {
           let event = res.body;
@@ -100,6 +111,7 @@ describe('API REST', () => {
       fakeSuccesResponse = { n: 1, nModified: 1, ok: 1 };
       chai.request(server)
         .put(`/events/${idEvent}`)
+        .auth(dummyUser.username, dummyUser.password)
         .send(updateEvent)
         .end((err, res) => {
           res.should.have.status(200);
@@ -114,6 +126,7 @@ describe('API REST', () => {
       let fakeSuccesResponse = { n: 1, ok: 1 };
       chai.request(server)
         .delete(`/events/${idEvent}`)
+        .auth(dummyUser.username, dummyUser.password)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.eql(fakeSuccesResponse);
@@ -129,6 +142,7 @@ describe('API REST', () => {
       };
       chai.request(server)
         .post('/event/find')
+        .auth(dummyUser.username, dummyUser.password)
         .send(eventFilter)
         .end((err, res) => {
           let event = res.body[0];

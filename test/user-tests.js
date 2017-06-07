@@ -5,25 +5,23 @@ const assert = chai.assert;
 const server = require('../server');
 const dbController = require('../models/dbController');
 
-
 chai.use(chaiHttp);
+
+let dummyUser = {
+  "username": "hugo",
+  "password": "secreto",
+  "email": "hugo@gmail.com",
+  "address": "Calle",
+  "fullname": "HugoN"
+};
 
 describe('Hello User-Tests!', () => {
     it('Sanity test', () => assert.equal(true, 1 === 1, "Everything is alright!"));
 });
 
-describe('User Managment Tests - ', () => {
+describe('User Managment Tests -', () => {
     before(() => {
-        dbController.dropCollection();
-        dbController.insertUserDocument(
-            {
-                "username": "hugo",
-                "password": "secreto",
-                "email": "hugo@gmail.com",
-                "address": "Calle",
-                "fullname": "HugoN"
-            },
-            () => { });
+      dbController.insertUserDocument(dummyUser, () => {});
     });
 
     describe('User should be asked to identify when requests for any authenticated operation', () => {
@@ -37,15 +35,14 @@ describe('User Managment Tests - ', () => {
         });
     });
 
-
     describe('User should be logged successfully with demo user,', () => {
             it('should return username and email after successful loggin', (done) => {
                         chai.request(server)
                             .get('/test')
-                            .auth('hugo', 'secreto')
+                            .auth(dummyUser.username, dummyUser.password)
                             .end((err, res) => {
                                 res.should.have.status(200);
-                                res.body.should.be.eql({ "username": "hugo",  "email": "hugo@gmail.com"});
+                                res.body.should.be.eql({ "username": dummyUser.username,  "email": dummyUser.email});
                                 done();
                             });
                     });

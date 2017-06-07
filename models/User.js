@@ -30,11 +30,9 @@ const UserSchema = Mongoose.Schema({
 });
 
 UserSchema.pre('save', function(next) {
-  console.log('Ecnrypting password before saving');
   this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(8), null);
   next();
 });
-
 
 UserSchema.methods.verifyPassword = function(password) {
   return bcrypt.compareSync(password, this.password);

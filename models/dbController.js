@@ -34,7 +34,7 @@ let findAndUpdate = function (idEvent, update, callback) {
 
 let dropCollection = () => {
   Event.collection.drop();
-  User.collection.drop();
+  //User.collection.drop();
 };
 
 let deleteById = (idEvent, callback) => {

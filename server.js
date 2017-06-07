@@ -34,25 +34,25 @@ passport.use(new BasicStrategy(
 //Server Configuration
 
 app.use(bodyParser.json({ type: 'application/json' }));
+//app.use(isAuthenticate);
 
 app.listen(3000, () => console.log('App listening on port 3000!'));
-
 
 //Routes
 
 app.get('/', (req, res) => res.send('Build a Backend with Node.js and Express.js'));
 
 app.route("/events")
-  .get(events.findAll)
-  .post(events.add);
+  .get(passport.authenticate('basic', { session: false }), events.findAll)
+  .post(passport.authenticate('basic', { session: false }), events.add);
 
 app.route("/events/:id")
-  .get(events.findById)
-  .put(events.updateById)
-  .delete(events.deleteById);
+  .get(passport.authenticate('basic', { session: false }), events.findById)
+  .put(passport.authenticate('basic', { session: false }), events.updateById)
+  .delete(passport.authenticate('basic', { session: false }), events.deleteById);
 
 app.route("/event/find")
-  .post(events.find);
+  .post(passport.authenticate('basic', { session: false }), events.find);
 
 app.route("/logintest")
   .get(users.test);
