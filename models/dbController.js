@@ -2,6 +2,7 @@ const MongoClient = require('mongodb').MongoClient;
 const ObjectID = require('mongodb').ObjectID;
 const assert = require('assert');
 const Event = require('./Event');
+const User = require('./User');
 const mongoose = require('mongoose');
 
 //let helloDatabase = () => mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
@@ -33,6 +34,7 @@ let findAndUpdate = function (idEvent, update, callback) {
 
 let dropCollection = () => {
   Event.collection.drop();
+  User.collection.drop();
 };
 
 let deleteById = (idEvent, callback) => {
@@ -47,4 +49,12 @@ let find = (filter, callback)  => {
     .catch(err => callback(err)); 
 };
 
-module.exports = { /*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById, find };
+// User management related functions
+let insertUserDocument = function(user, callback) {
+  let newUser = new User(user);
+  newUser.save()
+    .then(newUser => callback(newUser))
+    .catch(err => callback(err));
+};
+
+module.exports = { /*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById, find, insertUserDocument };
