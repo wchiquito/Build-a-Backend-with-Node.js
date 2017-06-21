@@ -25,11 +25,11 @@ describe('Hello Event-Tests!', () => {
 
 describe('API REST', () => {
   before(() => {
-    dbController.dropCollection();
+    dbController.dropCollection('events');
     dbController.insertEventDocument({
-        title: "Concierto Metallica",
-        description: "Evento Musical de calidad",
-        date: "2017-04-09"}, () => {});
+      title: "Concierto Metallica",
+      description: "Evento Musical de calidad",
+      date: "2017-04-09"}, () => {});
     dbController.insertEventDocument({
       title: "Concierto Red Hot Chilli Peppers",
       description: "Evento Musical de calidad maxima",

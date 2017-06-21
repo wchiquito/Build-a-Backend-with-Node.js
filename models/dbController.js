@@ -1,12 +1,8 @@
-const MongoClient = require('mongodb').MongoClient;
-const ObjectID = require('mongodb').ObjectID;
-const assert = require('assert');
 const Event = require('./Event');
 const User = require('./User');
 const mongoose = require('mongoose');
 
-//let helloDatabase = () => mongoose.connect(mongoURL, () => console.log("Connected successfully to server through mongoose"));
-
+// Event management related functions
 let insertEventDocument = function(event, callback) {
   let newEvent = new Event(event);
   newEvent.save()
@@ -32,11 +28,6 @@ let findAndUpdate = function (idEvent, update, callback) {
     .catch(err => callback(err));
 };
 
-let dropCollection = () => {
-  Event.collection.drop();
-  //User.collection.drop();
-};
-
 let deleteById = (idEvent, callback) => {
   let query = Event.remove({ _id: idEvent })
     .then(event => callback(event))
@@ -57,4 +48,10 @@ let insertUserDocument = function(user, callback) {
     .catch(err => callback(err));
 };
 
-module.exports = { /*helloDatabase, */insertEventDocument, getAllEvents, getEventById, findAndUpdate, dropCollection, deleteById, find, insertUserDocument };
+// General management related functions
+let dropCollection = (collection) => {
+  mongoose.connection.collections[collection].drop()
+    .catch(err => console.log(`Error: %s`, err));
+};
+
+module.exports = { insertEventDocument, getAllEvents, getEventById, findAndUpdate, deleteById, find, insertUserDocument, dropCollection };
