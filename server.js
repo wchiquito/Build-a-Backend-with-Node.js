@@ -37,7 +37,11 @@ const acl = new nodeACL(new nodeACL.mongodbBackend(db.db, 'acl_', true));
 acl.middleware = (req, res, next) => {
   let user_ID = req.user._id.toString(),
       event_ID = req.params.id;
-  acl.isAllowed(user_ID, event_ID, req.method, (err, allowed) => { if (allowed) next(); });
+  acl.isAllowed(user_ID, event_ID, req.method, (err, allowed) => { 
+    if (err) console.log(err);
+    console.log(`allowed ${allowed} - user_ID ${user_ID} - event_ID ${event_ID}`);
+    if (allowed) next();
+  });
 }
 
 //Server Configuration
@@ -58,11 +62,12 @@ app.get('/', (req, res) => res.send('Build a Backend with Node.js and Express.js
 app.route("/events")
   .get(events.findAll)
   .post(events.add, (req, res, next) => {
-    acl.allow(req.user._id.toString(), `/events/${req.event._id.toString()}`, ['PUT', 'DELETE']);
+    acl.allow(req.event._id.toString(), `/events/${req.event._id.toString()}`, ['PUT', 'DELETE']);
     acl.addUserRoles(req.user._id.toString(), req.user._id.toString(), (err) => {
       if (err) console.log(`Role ${req.user._id.toString()} exists`);
       res.status(201).json(req.event);
     });
+    acl.allowedPermissions(req.user._id.toString(), req.event._id.toString(), (err, permissions) => console.log('***********', permissions));
   });
 
 app.route("/events/:id")
