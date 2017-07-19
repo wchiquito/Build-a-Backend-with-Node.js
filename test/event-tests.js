@@ -26,26 +26,45 @@ describe('Hello Event-Tests!', () => {
 describe('API REST', () => {
   before(() => {
     dbController.dropCollection('events');
-    dbController.insertEventDocument({
-      title: "Concierto Metallica",
-      description: "Evento Musical de calidad",
-      date: "2017-04-09"}, () => {});
-    dbController.insertEventDocument({
-      title: "Concierto Red Hot Chilli Peppers",
-      description: "Evento Musical de calidad maxima",
-      date: "2017-04-10"}, () => {});
-    dbController.insertEventDocument({
-      title: "Concierto Maroon 5",
-      description: "Evento Musical para ligar",
-      date: "2017-04-11"}, () => {});
-    dbController.insertEventDocument({
-      title: "Concierto Rolling Stones",
-      description: "Evento Musical de leyenda",
-      date: "2017-04-12"}, () => {});
-    dbController.insertEventDocument({
-      title: "Concierto Mago de Oz",
-      description: "Evento Musical de ponerse en pie y alzar el puño",
-      date: "2017-04-13"}, () => {});
+  });
+
+  describe('/POST multiple events', () => {
+    it('should POST multiple events', (done) => {
+      let createEvents = (newEvent) => {
+        chai.request(server)
+          .post('/events')
+          .auth(dummyUser.username, dummyUser.password)
+          .send(newEvent)
+          .end((err, res) => {
+            let event = res.body;
+            res.should.have.status(200);
+            event.title.should.be.equal(newEvent.title);
+            event.description.should.be.equal(newEvent.description);
+            event.date.should.be.equal(newEvent.date);
+          });
+        }
+        createEvents({
+          title: "Concierto Metallica",
+          description: "Evento Musical de calidad",
+          date: "2017-04-09T00:00:00.000Z"});
+        createEvents({
+          title: "Concierto Red Hot Chilli Peppers",
+          description: "Evento Musical de calidad maxima",
+          date: "2017-04-10T00:00:00.000Z"});
+        createEvents({
+          title: "Concierto Maroon 5",
+          description: "Evento Musical para ligar",
+          date: "2017-04-11T00:00:00.000Z"});
+        createEvents({
+          title: "Concierto Rolling Stones",
+          description: "Evento Musical de leyenda",
+          date: "2017-04-12T00:00:00.000Z"});
+        createEvents({
+          title: "Concierto Mago de Oz",
+          description: "Evento Musical de ponerse en pie y alzar el puño",
+          date: "2017-04-13T00:00:00.000Z"});
+        done();
+      });
   });
 
   describe('/GET all Events', () => {
