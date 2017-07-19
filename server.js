@@ -62,12 +62,12 @@ app.get('/', (req, res) => res.send('Build a Backend with Node.js and Express.js
 app.route("/events")
   .get(events.findAll)
   .post(events.add, (req, res, next) => {
-    acl.allow(req.event._id.toString(), `/events/${req.event._id.toString()}`, ['PUT', 'DELETE']);
+    acl.allow(req.user._id.toString(), `/events/${res.locals.event._id.toString()}`, ['PUT', 'DELETE']);
     acl.addUserRoles(req.user._id.toString(), req.user._id.toString(), (err) => {
-      if (err) console.log(`Role ${req.user._id.toString()} exists`);
-      res.status(201).json(req.event);
+      if (err) console.log(err);
+      res.status(201).json(res.locals.event);
     });
-    acl.allowedPermissions(req.user._id.toString(), req.event._id.toString(), (err, permissions) => console.log('***********', permissions));
+    acl.allowedPermissions(req.user._id.toString(), res.locals.event._id.toString(), (err, permissions) => console.log('***********', permissions));
   });
 
 app.route("/events/:id")

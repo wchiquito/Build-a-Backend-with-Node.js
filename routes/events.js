@@ -11,9 +11,14 @@ function findById(req, res) {
     .catch(err => res.status(404).send(err));
 }
 
-function add(req, res) {
+function add(req, res, next) {
   eventManager.add(req.body)
-    .then(statusMessage => res.send(statusMessage));
+    .then(statusMessage => {
+      res.locals.event = statusMessage;
+      //res.send(statusMessage);
+      next()
+    });
+    
 }
 
 function updateById(req, res) {
