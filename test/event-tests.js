@@ -19,6 +19,14 @@ const dummyUser = {
   "fullname": "HugoN"
 };
 
+const dummyUser2 = {
+  "username": "william",
+  "password": "secretisimo",
+  "email": "wchiquito@gmail.com",
+  "address": "Calle",
+  "fullname": "wchiquito"
+};
+
 describe('Hello Event-Tests!', () => {
     it('First test', () => assert.equal( true , 1 === 1 , "Everything is alright!"));
 });
@@ -37,7 +45,7 @@ describe('API REST', () => {
           .send(newEvent)
           .end((err, res) => {
             let event = res.body;
-            res.should.have.status(200);
+            res.should.have.status(201);
             event.title.should.be.equal(newEvent.title);
             event.description.should.be.equal(newEvent.description);
             event.date.should.be.equal(newEvent.date);
@@ -110,7 +118,7 @@ describe('API REST', () => {
         .send(newEvent)
         .end((err, res) => {
           let event = res.body;
-          res.should.have.status(200);
+          res.should.have.status(201);
           event.title.should.be.equal(newEvent.title);
           event.description.should.be.equal(newEvent.description);
           event.date.should.be.equal(newEvent.date);
@@ -140,6 +148,26 @@ describe('API REST', () => {
     });
   });
 
+    describe('/PUT an update on a single event by id not being owner', () => {
+    it('should fail trying to update an event not being the owner', (done) => {
+      let updateEvent = {
+        "_id": idEvent,
+        "title": "Duaplipa",
+        "description": "Female Singer",
+        "date": "1988"
+      },
+      fakeSuccesResponse = { n: 1, nModified: 1, ok: 1 };
+      chai.request(server)
+        .put(`/events/${idEvent}`)
+        .auth(dummyUser2.username, dummyUser2.password)
+        .send(updateEvent)
+        .end((err, res) => {
+          res.should.have.status(401);
+          done();
+        });
+    });
+  });
+
   describe('/DELETE a single event by id', () => {
     it('should delete an specific event by id (sha1)', (done) => {
       let fakeSuccesResponse = { n: 1, ok: 1 };
@@ -149,6 +177,19 @@ describe('API REST', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.eql(fakeSuccesResponse);
+          done();
+        });
+    });
+  });
+
+    describe('/DELETE a single event by id not being owner', () => {
+    it('should fail trying to delete an event not being the owner', (done) => {
+      let fakeSuccesResponse = { n: 1, ok: 1 };
+      chai.request(server)
+        .delete(`/events/${idEvent}`)
+        .auth(dummyUser2.username, dummyUser2.password)
+        .end((err, res) => {
+          res.should.have.status(401);
           done();
         });
     });

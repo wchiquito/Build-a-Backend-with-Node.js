@@ -22,7 +22,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 //Authenticate configuration
 passport.use(new BasicStrategy(
-  function(userid, password, done) {
+  function (userid, password, done) {
     User.findOne({ username: userid }, function (err, user) {
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
@@ -36,8 +36,8 @@ passport.use(new BasicStrategy(
 const acl = new nodeACL(new nodeACL.mongodbBackend(db.db, 'acl_', true));
 acl.middleware = (req, res, next) => {
   let user_ID = req.user._id.toString(),
-      event_ID = req.params.id;
-  acl.isAllowed(user_ID, event_ID, req.method, (err, allowed) => { 
+    event_ID = req.params.id;
+  acl.isAllowed(user_ID, `/events/${event_ID}`, req.method, (err, allowed) => {
     if (err) console.log(err);
     console.log(`allowed ${allowed} - user_ID ${user_ID} - event_ID ${event_ID}`);
     if (allowed) next();
@@ -62,12 +62,16 @@ app.get('/', (req, res) => res.send('Build a Backend with Node.js and Express.js
 app.route("/events")
   .get(events.findAll)
   .post(events.add, (req, res, next) => {
-    acl.allow(req.user._id.toString(), `/events/${res.locals.event._id.toString()}`, ['PUT', 'DELETE']);
-    acl.addUserRoles(req.user._id.toString(), req.user._id.toString(), (err) => {
+    //acl.allow(req.user._id.toString(), `/events/${res.locals.event._id.toString()}`, ['PUT', 'DELETE']);
+    // acl.addUserRoles(req.user._id.toString(), req.user._id.toString(), (err) => {
+    let resource = `/events/${res.locals.event._id.toString()}`;
+    acl.allow('creator', resource, ['PUT', 'DELETE']);
+    acl.addUserRoles(req.user._id.toString(), 'creator', (err) => {
       if (err) console.log(err);
+      acl.allowedPermissions(req.user._id.toString(), resource, (err, permissions) => console.log(`** ${req.user._id.toString()} *********`, permissions));
       res.status(201).json(res.locals.event);
+
     });
-    acl.allowedPermissions(req.user._id.toString(), res.locals.event._id.toString(), (err, permissions) => console.log('***********', permissions));
   });
 
 app.route("/events/:id")
@@ -85,8 +89,8 @@ app.route("/logintest")
 
 app.get('/test',
   passport.authenticate('basic', { session: false }),
-  function(req, res) {
+  function (req, res) {
     res.json({ username: req.user.username, email: req.user.email });
-});
+  });
 
 module.exports = app;
