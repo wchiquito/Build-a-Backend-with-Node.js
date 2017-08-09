@@ -14,6 +14,11 @@ const EventSchema = Mongoose.Schema({
     type: Date,
     default: Date.now(),
     required: true
+  },
+  organizer: {
+    type: String,
+    required: true,
+    index: true
   }
 });
 

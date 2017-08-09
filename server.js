@@ -85,6 +85,9 @@ app.route("/event/find")
 app.route("/logintest")
   .get(users.test);
 
+app.route("/:id/events")
+  .get(events.findByOrganizer);
+
 //dbController.helloDatabase();
 
 app.get('/test',
