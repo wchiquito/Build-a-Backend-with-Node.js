@@ -50,8 +50,9 @@ let insertUserDocument = function(user, callback) {
 
 // General management related functions
 let dropCollection = (collection) => {
-  mongoose.connection.collections[collection].drop()
-    .catch(err => console.log(`Error: %s`, err));
+  mongoose.connection.collections[collection]
+    .drop()
+    //.catch(err => console.log(`Error: %s`, err));
 };
 
 module.exports = { insertEventDocument, getAllEvents, getEventById, findAndUpdate, deleteById, find, insertUserDocument, dropCollection };
