@@ -17,10 +17,14 @@
   },
   "homepage": "https://github.com/wchiquito/Build-a-Backend-with-Node.js#readme",
   "dependencies": {
+    "acl": "^0.4.10",
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "mongodb": "^2.2.26",
     "mongoose": "^4.9.9",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0",
     "sha.js": "^2.4.8"
   },
   "devDependencies": {

@@ -11,9 +11,13 @@ function findById(req, res) {
     .catch(err => res.status(404).send(err));
 }
 
-function add(req, res) {
-  eventManager.add(req.body)
-    .then(statusMessage => res.send(statusMessage));
+function add(req, res, next) {
+  eventManager.add(Object.assign({ "organizer": req.user._id }, req.body))
+    .then(statusMessage => {
+      res.locals.event = statusMessage;
+      //res.send(statusMessage);
+      next()
+    });
 }
 
 function updateById(req, res) {
@@ -34,4 +38,22 @@ function find(req, res) {
     .catch(err => res.status(404).send(err));
 }
 
-module.exports = { findAll, findById, add, updateById, deleteById, find };
+function findByOrganizer(req, res) {
+  eventManager.find({"organizer": req.params.id})
+    .then(result => res.send(result))
+    .catch(err => res.status(404).send(err));
+}
+
+function subscribeUser(req, res) {
+  eventManager.findById(req.params.eventId)
+    .then(result => {
+      let event = result[0]
+      event.subscribers.push(req.params.userId)
+      eventManager.updateById(req.params.eventId, event)
+        .then(statusMessage => res.send(statusMessage))
+        .catch(err => res.status(404).send(err));
+    })
+    .catch(err => res.status(404).send(err));
+}
+
+module.exports = { findAll, findById, add, updateById, deleteById, find, findByOrganizer, subscribeUser };
