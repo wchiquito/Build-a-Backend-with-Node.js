@@ -7,7 +7,7 @@ const dbController = require('../models/dbController');
 
 chai.use(chaiHttp);
 
-let idEvent;
+let idEvent, anotherIdEvent;
 
 let dummyUser = {
   "username": "hugo",
@@ -86,6 +86,7 @@ describe('API REST', () => {
             res.body.should.be.a('array');
             res.body.length.should.be.eql(5);
             idEvent = res.body[0]._id;
+            anotherIdEvent = res.body[2]._id;
             done();
           });
       });
@@ -228,6 +229,21 @@ describe('API REST', () => {
           });
       });
     });
+
+    describe('Sign up a User to (RSVP) an event', () => {
+      it('should let a user to sign up to an existing event', (done) => {
+        chai.request(server)
+          .post(`/subscribe/${dummyUser._id.toString()}/toEvent/${anotherIdEvent}`)
+          .auth(dummyUser.username, dummyUser.password)
+          .end((err, res) => {
+            res.should.have.status(200);
+            //res.body.should.be.a('array');
+            //res.body.length.should.be.eql(5);
+            done();
+          });
+      });
+    });
+
   });
   
   describe('Users', () => {

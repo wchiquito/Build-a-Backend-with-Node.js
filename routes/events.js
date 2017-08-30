@@ -44,4 +44,16 @@ function findByOrganizer(req, res) {
     .catch(err => res.status(404).send(err));
 }
 
-module.exports = { findAll, findById, add, updateById, deleteById, find, findByOrganizer };
+function subscribeUser(req, res) {
+  eventManager.findById(req.params.eventId)
+    .then(result => {
+      let event = result[0]
+      event.subscribers.push(req.params.userId)
+      eventManager.updateById(req.params.eventId, event)
+        .then(statusMessage => res.send(statusMessage))
+        .catch(err => res.status(404).send(err));
+    })
+    .catch(err => res.status(404).send(err));
+}
+
+module.exports = { findAll, findById, add, updateById, deleteById, find, findByOrganizer, subscribeUser };

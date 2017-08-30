@@ -19,7 +19,8 @@ const EventSchema = Mongoose.Schema({
     type: String,
     required: true,
     index: true
-  }
+  },
+  subscribers: [{type: String}],
 });
 
 module.exports = Mongoose.model('Event', EventSchema);

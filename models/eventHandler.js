@@ -46,4 +46,5 @@ let find = filter =>
     dbController.find(filter, result => resolve(result));
 });
 
-module.exports = { findAll, findById, add, updateById, deleteById, find/*, Event*/ };
+
+module.exports = { findAll, findById, add, updateById, deleteById, find, /*, Event*/ };

@@ -88,6 +88,10 @@ app.route("/logintest")
 app.route("/:id/events")
   .get(events.findByOrganizer);
 
+app.route("/subscribe/:userId/toEvent/:eventId")
+  .post(events.subscribeUser);
+
+
 //dbController.helloDatabase();
 
 app.get('/test',
