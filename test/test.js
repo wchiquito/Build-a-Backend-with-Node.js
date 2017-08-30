@@ -216,7 +216,7 @@ describe('API REST', () => {
     });
 
     describe('Find all events organized by an User', () => {
-      it('should return all events registered for an user', (done) => {
+      it('should return all events registered as organized by a given user', (done) => {
         chai.request(server)
           .get(`/${dummyUser._id.toString()}/events`)
           .auth(dummyUser.username, dummyUser.password)
